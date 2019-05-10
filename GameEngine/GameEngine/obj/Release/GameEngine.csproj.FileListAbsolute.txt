@@ -1,0 +1,8 @@
+F:\FNA\GameEngine\GameEngine\bin\Release\Content\sprite.png
+F:\FNA\GameEngine\GameEngine\bin\Release\GameEngine.exe.config
+F:\FNA\GameEngine\GameEngine\bin\Release\GameEngine.exe
+F:\FNA\GameEngine\GameEngine\bin\Release\GameEngine.pdb
+F:\FNA\GameEngine\GameEngine\bin\Release\FNA.dll
+F:\FNA\GameEngine\GameEngine\obj\Release\GameEngine.csprojResolveAssemblyReference.cache
+F:\FNA\GameEngine\GameEngine\obj\Release\GameEngine.exe
+F:\FNA\GameEngine\GameEngine\obj\Release\GameEngine.pdb
