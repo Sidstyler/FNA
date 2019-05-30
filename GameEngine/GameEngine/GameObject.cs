@@ -86,6 +86,10 @@ namespace GameEngine
 			}
 		}
 
+		public virtual void BulletResponse()
+		{
+		}
+
         private void CalculateCenter()
         {
             if( mImage == null )
