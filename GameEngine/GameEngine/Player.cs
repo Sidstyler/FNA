@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GameEngine
 {
-	public class Player : GameObject
+	public class Player : Character
 	{
 		public Player()
 		{
@@ -32,29 +32,48 @@ namespace GameEngine
 			base.Load( content );
 		}
 
-		public override void Update( List<GameObject> objects )
+		public override void Update( List<GameObject> objects, Map currentMap )
 		{
-			CheckInput();
-			base.Update( objects );
+			CheckInput( objects, currentMap);
+			base.Update( objects, currentMap );
 		}
 
-		private void CheckInput()
+		private void CheckInput( List<GameObject> objects, Map currentMap )
 		{
-			if( Input.IsKeyDown( Keys.D ) )
+			if( Character.mApplyGravity == false )
 			{
-				mPosition.X += 5;
+				if( Input.IsKeyDown( Keys.D ) )
+				{
+					MoveRight();
+				}
+				else if( Input.IsKeyDown( Keys.A ) )
+				{
+					MoveLeft();
+				}
+				if( Input.IsKeyDown( Keys.W ) )
+				{
+					MoveUp();
+				}
+				else if( Input.IsKeyDown( Keys.S ) )
+				{
+					MoveDown();
+				}
 			}
-			else if( Input.IsKeyDown( Keys.A ) )
+			else
 			{
-				mPosition.X -= 5;
-			}
-			if( Input.IsKeyDown( Keys.W ) )
-			{
-				mPosition.Y -= 5;
-			}
-			else if( Input.IsKeyDown( Keys.S ) )
-			{
-				mPosition.Y += 5;
+				if( Input.IsKeyDown( Keys.D ) )
+				{
+					MoveRight();
+				}
+				else if( Input.IsKeyDown( Keys.A ) )
+				{
+					MoveLeft();
+				}
+				if( Input.IsKeyDown( Keys.W ) )
+				{
+					Jump( currentMap );
+				}
+				
 			}
 		}
 	}

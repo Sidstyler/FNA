@@ -21,14 +21,40 @@ namespace GameEngine
 
 		public void Load( ContentManager content )
 		{
-			//mWallImage = TextureLoader.Load( "pixel", content );
+			mWallImage = TextureLoader.Load( "pixel", content );
+		}
+
+		public Rectangle CheckCollision( Rectangle inRectangle )
+		{
+			for ( int i = 0 ; i < mWalls.Count ; i++ )
+			{
+				if( mWalls[ i ] != null && mWalls[ i ].mWall.Intersects( inRectangle ) == true )
+				{
+					return mWalls[ i ].mWall;
+				}
+			}
+
+			return Rectangle.Empty;
+		}
+
+		public void DrawWalls( SpriteBatch spriteBatch )
+		{
+			for ( int i = 0 ; i < mWalls.Count ; i++ )
+			{
+				if( mWalls[ i ] != null && mWalls[ i ].mActive == true )
+				{
+					Vector2 position = new Vector2( mWalls[ i ].mWall.X, mWalls[ i ].mWall.Y );
+					spriteBatch.Draw( mWallImage, position, mWalls[ i ].mWall, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.7f );
+				}
+
+			}
 		}
 	}
 
 	public class Wall
 	{
 		public Rectangle mWall;
-		public bool mActive;
+		public bool mActive = true;
 
 		public Wall()
 		{

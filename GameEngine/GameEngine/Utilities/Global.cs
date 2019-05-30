@@ -8,7 +8,7 @@ namespace GameEngine
     {
         public static Game1 game;
         public static Random random = new Random();
-        public static string levelName;
+        public static string levelName = "level";
 
         public static void Initialize(Game1 inputGame)
         {

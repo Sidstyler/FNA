@@ -16,6 +16,7 @@ namespace GameEngine
         SpriteBatch mSpriteBatch;
 
 		public List<GameObject> mGameObjects = new List<GameObject>();
+		public Map mMap = new Map();
 
         public Game1() //This is the constructor, this function is called whenever the game class is created.
         {
@@ -43,6 +44,7 @@ namespace GameEngine
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
+			mMap.Load( Content );
 
 			LoadLevel();
         }
@@ -72,6 +74,7 @@ namespace GameEngine
 
             mSpriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend );
 			DrawObjects();
+			mMap.DrawWalls( mSpriteBatch );
             mSpriteBatch.End();
 
             //Draw the things FNA handles for us underneath the hood:
@@ -81,6 +84,9 @@ namespace GameEngine
 		public void LoadLevel()
 		{
 			mGameObjects.Add( new Player( new Vector2( 640, 360 ) ) );
+
+			mMap.mWalls.Add( new Wall( new Rectangle( 256, 256, 256, 256 ) ) );
+			mMap.mWalls.Add( new Wall( new Rectangle( 0, 650, 1280, 128 ) ) );
 
 			LoadObjects();
 		}
@@ -98,7 +104,7 @@ namespace GameEngine
 		{
 			for( int i = 0 ; i < mGameObjects.Count ; i++ )
 			{
-				mGameObjects[ i ].Update( mGameObjects );
+				mGameObjects[ i ].Update( mGameObjects, mMap );
 				
 			}
 		}
