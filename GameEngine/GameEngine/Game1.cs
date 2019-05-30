@@ -15,8 +15,7 @@ namespace GameEngine
         GraphicsDeviceManager mGraphics;
         SpriteBatch mSpriteBatch;
 
-        Texture2D mImage;
-        Vector2 mPosition;
+		public List<GameObject> mGameObjects = new List<GameObject>();
 
         public Game1() //This is the constructor, this function is called whenever the game class is created.
         {
@@ -34,7 +33,6 @@ namespace GameEngine
         /// </summary>
         protected override void Initialize()
         {
-            mPosition = new Vector2( 640, 360 );
             base.Initialize();
         }
 
@@ -46,7 +44,7 @@ namespace GameEngine
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mImage = TextureLoader.Load("sprite", Content);
+			LoadLevel();
         }
 
         /// <summary>
@@ -57,22 +55,9 @@ namespace GameEngine
         protected override void Update(GameTime gameTime)
         {
             Input.Update();
-            if( Input.IsKeyDown( Keys.D ) )
-            {
-                mPosition.X += 5;
-            }
-            else if( Input.IsKeyDown( Keys.A ) )
-            {
-                mPosition.X -= 5;
-            }
-            if( Input.IsKeyDown( Keys.W ) )
-            {
-                mPosition.Y -= 5;
-            }
-            else if( Input.IsKeyDown( Keys.S ) )
-            {
-                mPosition.Y += 5;
-            }
+
+			UpdateObjects();
+           
             //Update the things FNA handles for us underneath the hood:
             base.Update(gameTime);
         }
@@ -85,14 +70,46 @@ namespace GameEngine
             //This will clear what's on the screen each frame, if we don't clear the screen will look like a mess:
             GraphicsDevice.Clear( Color.CornflowerBlue );
 
-            mSpriteBatch.Begin();
-
-            mSpriteBatch.Draw( mImage, mPosition, Color.White );
-
+            mSpriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend );
+			DrawObjects();
             mSpriteBatch.End();
 
             //Draw the things FNA handles for us underneath the hood:
             base.Draw(gameTime);
         }
-    }
+
+		public void LoadLevel()
+		{
+			mGameObjects.Add( new Player( new Vector2( 640, 360 ) ) );
+
+			LoadObjects();
+		}
+
+		public void LoadObjects()
+		{
+			for( int i = 0 ; i < mGameObjects.Count ; i++ )
+			{
+				mGameObjects[ i ].Initialize();
+				mGameObjects[ i ].Load( Content );
+			}
+		}
+
+		public void UpdateObjects()
+		{
+			for( int i = 0 ; i < mGameObjects.Count ; i++ )
+			{
+				mGameObjects[ i ].Update( mGameObjects );
+				
+			}
+		}
+
+		public void DrawObjects()
+		{
+			for( int i = 0 ; i < mGameObjects.Count ; i++ )
+			{
+				mGameObjects[ i ].Draw( mSpriteBatch );
+
+			}
+		}
+	}
 }
