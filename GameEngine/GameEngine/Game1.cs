@@ -18,6 +18,9 @@ namespace GameEngine
 		public List<GameObject> mGameObjects = new List<GameObject>();
 		public Map mMap = new Map();
 
+
+        GameHUD mGameHud = new GameHUD();
+
         public Game1() //This is the constructor, this function is called whenever the game class is created.
         {
             mGraphics = new GraphicsDeviceManager(this);
@@ -46,6 +49,8 @@ namespace GameEngine
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 			mMap.Load( Content );
 
+            mGameHud.Load(Content);
+
 			LoadLevel();
         }
 
@@ -59,7 +64,8 @@ namespace GameEngine
             Input.Update();
 
 			UpdateObjects();
-           
+
+            mMap.Update(mGameObjects);
             //Update the things FNA handles for us underneath the hood:
             base.Update(gameTime);
         }
@@ -77,6 +83,8 @@ namespace GameEngine
 			mMap.DrawWalls( mSpriteBatch );
             mSpriteBatch.End();
 
+            mGameHud.Draw(mSpriteBatch);
+
             //Draw the things FNA handles for us underneath the hood:
             base.Draw(gameTime);
         }
@@ -89,6 +97,11 @@ namespace GameEngine
 
 			mMap.mWalls.Add( new Wall( new Rectangle( 256, 256, 256, 256 ) ) );
 			mMap.mWalls.Add( new Wall( new Rectangle( 0, 650, 1280, 128 ) ) );
+
+            mMap.mDecor.Add(new Decor(Vector2.Zero, "background", 1f) );
+
+            mMap.LoadMap(Content);
+
 
 			LoadObjects();
 		}
@@ -118,6 +131,12 @@ namespace GameEngine
 				mGameObjects[ i ].Draw( mSpriteBatch );
 
 			}
-		}
+
+            for (int i = 0; i < mMap.mDecor.Count; i++)
+            {
+                mMap.mDecor[ i ].Draw(mSpriteBatch);
+
+            }
+        }
 	}
 }

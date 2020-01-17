@@ -63,6 +63,8 @@ namespace GameEngine
 			mActive = false;
 			mRespawnTimer = mMaxRespawnTimer;
 
+            Player.mScore++;
+
 			mExplosion.Play( 0.1f, 0, 0 );
 			base.BulletResponse();
 		}
