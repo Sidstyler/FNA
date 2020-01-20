@@ -14,7 +14,7 @@ namespace GameEngine
     public class GameObject
     {
         protected Texture2D mImage;
-        protected Vector2 mPosition;
+        public Vector2 mPosition;
 
 		public Color mDrawColor = Color.White;
         public float mScale = 1f;
