@@ -31,8 +31,17 @@ namespace GameEngine
 
 		public override void Load( ContentManager content )
 		{
-			mImage = TextureLoader.Load( "sprite", content );
+			mImage = TextureLoader.Load( "spritesheet", content );
+
+			LoadAnimation("ShyBoy.anm", content );
+			ChangeAnimation(Animations.IdleLeft);
+
 			base.Load( content );
+
+			mBoundingBoxOffset.X = 0;
+			mBoundingBoxOffset.Y = 0;
+			mBoundingBoxWidth = mAnimationSet.width;
+			mBoundingBoxHeight = mAnimationSet.height;
 		}
 
 		public override void Update( List<GameObject> objects, Map currentMap )
@@ -84,5 +93,39 @@ namespace GameEngine
 				Fire();
 			}
 		}
-	}
+
+        protected override void UpdateAnimations()
+        {
+			if( mCurrentAnimation == null )
+            {
+				return;
+            }
+
+
+            base.UpdateAnimations();
+
+			if( mVelocity != Vector2.Zero || mIsJumping == true )
+            {
+				if( mDirection.X < 0 && AnimationIsNot( Animations.RunLeft ))
+                {
+					ChangeAnimation(Animations.RunLeft);
+                }
+				else if( mDirection.X > 0 && AnimationIsNot(Animations.RunRight))
+				{
+					ChangeAnimation(Animations.RunRight);
+				}
+            }
+			else if (mVelocity == Vector2.Zero || mIsJumping == false)
+			{
+				if (mDirection.X < 0 && AnimationIsNot(Animations.IdleLeft))
+				{
+					ChangeAnimation(Animations.IdleLeft);
+				}
+				else if (mDirection.X > 0 && AnimationIsNot(Animations.IdleRight))
+				{
+					ChangeAnimation(Animations.IdleRight);
+				}
+			}
+		}
+    }
 }

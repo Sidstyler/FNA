@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GameEngine
 {
-	public class Character : GameObject
+	public class Character : AnimatedObject
 	{
 		public Vector2 mVelocity;
 
