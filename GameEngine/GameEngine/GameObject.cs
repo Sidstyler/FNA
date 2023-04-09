@@ -14,12 +14,12 @@ namespace GameEngine
     public class GameObject
     {
         protected Texture2D mImage;
-        public Vector2 mPosition;
+        public Vector2 position;
 
 		public Color mDrawColor = Color.White;
         public float mScale = 1f;
         public float mRotation = 0f;
-        public float mLayerDepth = 0.5f;
+        public float layerDepth = 0.5f;
         public bool mActive = true;
 
         protected Vector2 mCenter;
@@ -35,11 +35,13 @@ namespace GameEngine
 
 		protected Vector2 mDirection = new Vector2( 1, 0 );
 
-		public Rectangle mBoundingBox
+		public Vector2 startPosition = new Vector2( -1, -1 );
+
+		public Rectangle BoundingBox
 		{
 			get
 			{
-				return new Rectangle( ( int )( mPosition.X + mBoundingBoxOffset.X ), ( int )( mPosition.Y + mBoundingBoxOffset.Y ), mBoundingBoxWidth, mBoundingBoxHeight );
+				return new Rectangle( ( int )( position.X + mBoundingBoxOffset.X ), ( int )( position.Y + mBoundingBoxOffset.Y ), mBoundingBoxWidth, mBoundingBoxHeight );
 			}
 		}
 
@@ -49,6 +51,15 @@ namespace GameEngine
 
         public virtual void Initialize()
         {
+			if( startPosition == new Vector2( -1, -1) )
+            {
+				startPosition = position;
+            }
+        }
+
+		public virtual void SetToDefaultPosition()
+        {
+			position = startPosition;
         }
 
         public virtual void Load( ContentManager content )
@@ -70,19 +81,19 @@ namespace GameEngine
 
 		public virtual bool CheckCollision( Rectangle inputRectangle )
 		{
-			return mBoundingBox.Intersects( inputRectangle );
+			return BoundingBox.Intersects( inputRectangle );
 		}
 
 		public virtual void Draw( SpriteBatch spriteBatch )
 		{
 			if( mBoundingBoxImage != null && mDrawBouningBoxes == true && mActive == true )
 			{
-				spriteBatch.Draw( mBoundingBoxImage, new Vector2( mBoundingBox.X, mBoundingBox.Y ), mBoundingBox, new Color( 120, 120, 120, 120 ), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f );
+				spriteBatch.Draw( mBoundingBoxImage, new Vector2( BoundingBox.X, BoundingBox.Y ), BoundingBox, new Color( 120, 120, 120, 120 ), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f );
 			}
 
 			if( mImage != null && mActive == true )
 			{
-				spriteBatch.Draw( mImage, mPosition, null, mDrawColor, mRotation, Vector2.Zero, mScale, SpriteEffects.None, mLayerDepth );
+				spriteBatch.Draw( mImage, position, null, mDrawColor, mRotation, Vector2.Zero, mScale, SpriteEffects.None, layerDepth );
 			}
 		}
 

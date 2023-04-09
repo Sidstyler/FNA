@@ -20,7 +20,7 @@ namespace GameEngine
 
 		public Player( Vector2 inputPosition )
 		{
-			mPosition = inputPosition;
+			position = inputPosition;
 		}
 
 		public override void Initialize()

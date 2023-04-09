@@ -48,14 +48,14 @@ namespace GameEngine
 				mVelocity.X = 0;
 			}
 
-			mPosition.X += mVelocity.X;
+			position.X += mVelocity.X;
 
 			if( mVelocity.Y != 0 && CheckCollisions( currentMap, objects, false ) )
 			{
 				mVelocity.Y = 0;
 			}
 
-			mPosition.Y += mVelocity.Y;
+			position.Y += mVelocity.Y;
 
 			if( mApplyGravity == true )
 			{
@@ -149,7 +149,7 @@ namespace GameEngine
 
 		protected virtual bool CheckCollisions( Map map, List<GameObject> objects, bool xAxis )
 		{
-			Rectangle futureBox = mBoundingBox;
+			Rectangle futureBox = BoundingBox;
 
 			int maxX = ( int )mMaxSpeed;
 			int maxY = ( int )mMaxSpeed;
@@ -211,14 +211,14 @@ namespace GameEngine
 
 		public void LandResponse( Rectangle wallCollision )
 		{
-			mPosition.Y = wallCollision.Top - ( mBoundingBoxHeight + mBoundingBoxOffset.Y );
+			position.Y = wallCollision.Top - ( mBoundingBoxHeight + mBoundingBoxOffset.Y );
 			mVelocity.Y = 0;
 			mIsJumping = false;
 		}
 
 		protected Rectangle OnGround( Map map )
 		{
-			Rectangle futureBoundingBox = new Rectangle( ( int )( mPosition.X + mBoundingBoxOffset.X ), ( int )( mPosition.Y + mBoundingBoxOffset.Y + ( mVelocity.Y + mGravity ) ), mBoundingBoxWidth, mBoundingBoxHeight );
+			Rectangle futureBoundingBox = new Rectangle( ( int )( position.X + mBoundingBoxOffset.X ), ( int )( position.Y + mBoundingBoxOffset.Y + ( mVelocity.Y + mGravity ) ), mBoundingBoxWidth, mBoundingBoxHeight );
 
 			return map.CheckCollision( futureBoundingBox );
 		}

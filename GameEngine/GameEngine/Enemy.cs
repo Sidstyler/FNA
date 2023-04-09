@@ -25,7 +25,7 @@ namespace GameEngine
 
 		public Enemy( Vector2 inPosition )
 		{
-			mPosition = inPosition;
+			position = inPosition;
 		}
 
 		public override void Initialize()
@@ -33,7 +33,7 @@ namespace GameEngine
 			mActive = true;
 			mCollidable = false;
 
-			mPosition.X = mRandom.Next( 0, 1100 );
+			position.X = mRandom.Next( 0, 1100 );
 			base.Initialize();
 		}
 

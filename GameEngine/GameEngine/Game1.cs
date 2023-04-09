@@ -15,11 +15,13 @@ namespace GameEngine
         GraphicsDeviceManager mGraphics;
         SpriteBatch mSpriteBatch;
 
-		public List<GameObject> mGameObjects = new List<GameObject>();
-		public Map mMap = new Map();
+		public List<GameObject> objects = new List<GameObject>();
+		public Map map = new Map();
 
 
         GameHUD mGameHud = new GameHUD();
+
+        Editor mEditor;
 
         public Game1() //This is the constructor, this function is called whenever the game class is created.
         {
@@ -37,6 +39,11 @@ namespace GameEngine
         /// </summary>
         protected override void Initialize()
         {
+#if DEBUG
+            mEditor = new Editor( this );
+            mEditor.Show();
+
+#endif
             base.Initialize();
 
             Camera.Initialize();
@@ -49,7 +56,12 @@ namespace GameEngine
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
-			mMap.Load( Content );
+
+#if DEBUG
+            mEditor.LoadTextures( Content );
+
+#endif
+            map.Load( Content );
 
             mGameHud.Load(Content);
 
@@ -67,9 +79,14 @@ namespace GameEngine
 
 			UpdateObjects();
 
-            mMap.Update(mGameObjects);
+            map.Update(objects);
 
             UpdateCamera();
+
+#if DEBUG
+            mEditor.Update( objects, map );
+
+#endif
 
             //Update the things FNA handles for us underneath the hood:
             base.Update(gameTime);
@@ -86,8 +103,14 @@ namespace GameEngine
             Resolution.BeginDraw();
 
             mSpriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Camera.GetTransformMatrix() );
-			DrawObjects();
-			mMap.DrawWalls( mSpriteBatch );
+
+#if DEBUG
+            mEditor.Draw(mSpriteBatch);
+
+#endif
+
+            DrawObjects();
+			map.DrawWalls( mSpriteBatch );
             mSpriteBatch.End();
 
             mGameHud.Draw(mSpriteBatch);
@@ -98,16 +121,16 @@ namespace GameEngine
 
 		public void LoadLevel()
 		{
-			mGameObjects.Add( new Player( new Vector2( 640, 360 ) ) );
+			objects.Add( new Player( new Vector2( 640, 360 ) ) );
 
-			mGameObjects.Add( new Enemy( new Vector2( 300, 522 ) ) );
+			objects.Add( new Enemy( new Vector2( 300, 522 ) ) );
 
-			mMap.mWalls.Add( new Wall( new Rectangle( 256, 256, 256, 256 ) ) );
-			mMap.mWalls.Add( new Wall( new Rectangle( 0, 650, 1280, 128 ) ) );
+			map.walls.Add( new Wall( new Rectangle( 256, 256, 256, 256 ) ) );
+			map.walls.Add( new Wall( new Rectangle( 0, 650, 1280, 128 ) ) );
 
-            mMap.mDecor.Add(new Decor(Vector2.Zero, "background", 1f) );
+            map.decor.Add(new Decor(Vector2.Zero, "background", 1f) );
 
-            mMap.LoadMap(Content);
+            map.LoadMap(Content);
 
 
 			LoadObjects();
@@ -115,44 +138,44 @@ namespace GameEngine
 
 		public void LoadObjects()
 		{
-			for( int i = 0 ; i < mGameObjects.Count ; i++ )
+			for( int i = 0 ; i < objects.Count ; i++ )
 			{
-				mGameObjects[ i ].Initialize();
-				mGameObjects[ i ].Load( Content );
+				objects[ i ].Initialize();
+				objects[ i ].Load( Content );
 			}
 		}
 
 		public void UpdateObjects()
 		{
-			for( int i = 0 ; i < mGameObjects.Count ; i++ )
+			for( int i = 0 ; i < objects.Count ; i++ )
 			{
-				mGameObjects[ i ].Update( mGameObjects, mMap );
+				objects[ i ].Update( objects, map );
 				
 			}
 		}
 
 		public void DrawObjects()
 		{
-			for( int i = 0 ; i < mGameObjects.Count ; i++ )
+			for( int i = 0 ; i < objects.Count ; i++ )
 			{
-				mGameObjects[ i ].Draw( mSpriteBatch );
+				objects[ i ].Draw( mSpriteBatch );
 
 			}
 
-            for (int i = 0; i < mMap.mDecor.Count; i++)
+            for (int i = 0; i < map.decor.Count; i++)
             {
-                mMap.mDecor[ i ].Draw(mSpriteBatch);
+                map.decor[ i ].Draw(mSpriteBatch);
 
             }
         }
 
         private void UpdateCamera()
         {
-            if( mGameObjects.Count == 0 )
+            if( objects.Count == 0 )
             {
                 return;
             }
-            Camera.Update(mGameObjects[0].mPosition);
+            Camera.Update(objects[0].position);
         }
 	}
 }

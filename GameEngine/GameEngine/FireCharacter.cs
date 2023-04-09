@@ -48,7 +48,7 @@ namespace GameEngine
 			{
 				if( mBullets[ i ].mActive == false )
 				{
-					mBullets[ i ].Fire( this, mPosition, mDirection );
+					mBullets[ i ].Fire( this, position, mDirection );
 					break;
 				}
 			}

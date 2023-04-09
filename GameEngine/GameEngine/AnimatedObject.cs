@@ -156,7 +156,7 @@ namespace GameEngine
             }
             else
             {
-                spriteBatch.Draw(mImage, mPosition, new Rectangle(mCurrentAnimationX, mCurrentAnimationY, mAnimationSet.width, mAnimationSet.height), mDrawColor, mRotation, Vector2.Zero, mScale, mSpriteEffect, mLayerDepth);
+                spriteBatch.Draw(mImage, position, new Rectangle(mCurrentAnimationX, mCurrentAnimationY, mAnimationSet.width, mAnimationSet.height), mDrawColor, mRotation, Vector2.Zero, mScale, mSpriteEffect, layerDepth);
             }
         }
 

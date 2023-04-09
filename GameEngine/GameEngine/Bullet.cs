@@ -37,7 +37,7 @@ namespace GameEngine
 				return;
 			}
 
-			mPosition += mDirection * mSpeed;
+			position += mDirection * mSpeed;
 
 			CheckCollisions( objects, currentMap );
 
@@ -53,7 +53,7 @@ namespace GameEngine
 		{
 			for ( int i	= 0 ; i < objects.Count ; i++ )
 			{
-				if( objects[ i ].mActive == true && objects[ i ] != mOwner && objects[ i ].CheckCollision( mBoundingBox ) == true )
+				if( objects[ i ].mActive == true && objects[ i ] != mOwner && objects[ i ].CheckCollision( BoundingBox ) == true )
 				{
 					Destroy();
 
@@ -63,7 +63,7 @@ namespace GameEngine
 				}
 			}
 
-			if( currentMap.CheckCollision( mBoundingBox ) != Rectangle.Empty )
+			if( currentMap.CheckCollision( BoundingBox ) != Rectangle.Empty )
 			{
 				Destroy();
 			}
@@ -78,7 +78,7 @@ namespace GameEngine
 		public void Fire( Character owner, Vector2 inputPosition, Vector2 inputDirection )
 		{
 			mOwner = owner;
-			mPosition = inputPosition;
+			position = inputPosition;
 			mDirection = inputDirection;
 			mActive = true;
 			mLifeTime = mMaxTimer;
